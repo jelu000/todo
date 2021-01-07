@@ -64,11 +64,6 @@
     "forceConsistentCasingInFileNames": true  /* Disallow inconsistently-cased references to the same file. */
 
 
-  },
-
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jelu000/todo.git"
   }
 
 }

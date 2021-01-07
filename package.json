@@ -16,5 +16,9 @@
   },
   "devDependencies": {
     "@types/lowdb": "^1.0.9"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jelu000/todo.git"
   }
 }
