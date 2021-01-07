@@ -10,6 +10,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const todoItem_1 = require("./todoItem");
 const todoCollection_1 = require("./todoCollection");
 const inquirer = __importStar(require("inquirer"));
+//import { JsonTodoCollection } from  "./JsonTodoCollection";
 console.clear();
 console.log("Jens ToDo List: ");
 let todos = [

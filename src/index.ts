@@ -2,6 +2,7 @@ import { TodoItem } from "./todoItem";
 import { TodoCollection } from "./todoCollection";
 
 import * as inquirer from 'inquirer';
+//import { JsonTodoCollection } from  "./JsonTodoCollection";
 
 console.clear();
 console.log("Jens ToDo List: ");
