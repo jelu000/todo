@@ -11,21 +11,51 @@ const todoItem_1 = require("./todoItem");
 const todoCollection_1 = require("./todoCollection");
 const inquirer = __importStar(require("inquirer"));
 console.clear();
-console.log("Jens ToDo List");
+console.log("Jens ToDo List: ");
 let todos = [
     new todoItem_1.TodoItem(1, "köpa blommor"), new todoItem_1.TodoItem(2, "köra skoter"),
     new todoItem_1.TodoItem(3, "busa med hund"), new todoItem_1.TodoItem(4, "kasta sopor")
 ];
 let colection = new todoCollection_1.TodoCollection("Jens", todos);
+let showCompleted = true;
 function displayTodoList() {
-    console.log(`${colection.userName} todoList`
-        + `${colection.getItemCounts().incomplete} items to do`);
-    colection.getTodosItems(true).forEach(item => item.printDetails());
+    console.log(`${colection.userName} todoList: `
+        + `${colection.getItemCounts().incomplete} saker att göra! `);
+    colection.getTodosItems(showCompleted).forEach(item => item.printDetails());
 }
 var Commands;
 (function (Commands) {
+    Commands["Add"] = "Add new task";
+    Commands["Complete"] = "Complete task";
+    Commands["Toggle"] = "Show/Hide completed";
+    Commands["Purge"] = "Remove completed task";
     Commands["Quit"] = "Quit";
 })(Commands || (Commands = {}));
+function promptComplete() {
+    console.clear();
+    inquirer.prompt({
+        type: "checkbox",
+        name: "complete",
+        message: "Mark task complete",
+        choices: colection.getTodosItems(showCompleted).map(item => ({
+            name: item.task, value: item.id, checked: item.complete
+        }))
+    }).then(answers => {
+        let completedTask = answers["complete"];
+        colection.getTodosItems(true).forEach(item => colection.markComplete(item.id, completedTask.find(id => id === item.id) != undefined));
+        promptUser();
+    });
+}
+function promptAdd() {
+    console.clear();
+    inquirer.prompt({ type: "input", name: "add", message: "Enter task:" })
+        .then(answer => {
+        if (answer["add"] !== "") {
+            colection.addTodo(answer["add"]);
+        }
+        promptUser();
+    });
+}
 function promptUser() {
     console.clear();
     displayTodoList();
@@ -35,8 +65,26 @@ function promptUser() {
         message: "Choose  option",
         choices: Object.values(Commands),
     }).then(answer => {
-        if (answer["command"] !== Commands.Quit) {
-            promptUser();
+        switch (answer["command"]) {
+            case Commands.Toggle:
+                showCompleted = !showCompleted;
+                promptUser();
+                break;
+            case Commands.Add:
+                promptAdd();
+                break;
+            case Commands.Complete:
+                if (colection.getItemCounts().incomplete > 0) {
+                    promptComplete();
+                }
+                else {
+                    promptUser();
+                }
+                break;
+            case Commands:
+                Purge: colection.removeComplete();
+                promptUser();
+                break;
         }
     });
 }

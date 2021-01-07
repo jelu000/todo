@@ -4,7 +4,7 @@ import { TodoCollection } from "./todoCollection";
 import * as inquirer from 'inquirer';
 
 console.clear();
-console.log("Jens ToDo List");
+console.log("Jens ToDo List: ");
 
 let todos = [
   new TodoItem(1, "köpa blommor"), new TodoItem(2, "köra skoter")
@@ -12,18 +12,51 @@ let todos = [
 ];
 
 let colection:TodoCollection = new TodoCollection("Jens", todos);
-
+let showCompleted = true;
 
 function displayTodoList():void {
-  console.log(`${colection.userName} todoList`
-  + `${colection.getItemCounts().incomplete} items to do`
+  console.log(`${colection.userName} todoList: `
+  + `${colection.getItemCounts().incomplete} saker att göra! `
   );
 
-  colection.getTodosItems(true).forEach(item => item.printDetails());
+  colection.getTodosItems(showCompleted).forEach(item => item.printDetails());
 }
 
 enum Commands {
+  Add = "Add new task",
+  Complete = "Complete task",
+  Toggle = "Show/Hide completed",
+  Purge = "Remove completed task",
   Quit = "Quit"
+}
+
+function promptComplete():void {
+  console.clear();
+  inquirer.prompt({
+    type: "checkbox",
+    name: "complete",
+    message: "Mark task complete",
+    choices: colection.getTodosItems(showCompleted).map(item =>({
+      name: item.task, value: item.id, checked: item.complete}))
+    }).then(answers => {
+      let completedTask = answers["complete"] as number[];
+      colection.getTodosItems(true).forEach(item =>
+        colection.markComplete(item.id, completedTask.find(id => id===item.id) != undefined));
+      promptUser();
+  })
+}
+
+function promptAdd():void {
+  console.clear();
+
+  inquirer.prompt({ type: "input", name: "add", message: "Enter task:"})
+    .then(answer => {
+        if (answer["add"] !== ""){
+          colection.addTodo(answer["add"]);
+        }
+    promptUser();
+  })
+
 }
 
 function promptUser(): void {
@@ -38,8 +71,30 @@ function promptUser(): void {
     choices: Object.values(Commands),
     //badProperty: true
   }).then(answer => {
-    if (answer["command"] !== Commands.Quit){
+    switch (answer["command"]){
+      case Commands.Toggle:
+        showCompleted = !showCompleted;
+        promptUser();
+        break;
+
+      case Commands.Add:
+        promptAdd();
+        break;
+
+      case Commands.Complete:
+        if (colection.getItemCounts().incomplete > 0){
+          promptComplete();
+        }
+        else {
+          promptUser();
+        }
+        break;
+
+      case Commands:Purge:
+      colection.removeComplete();
       promptUser();
+      break;
+
     }
 
   })
