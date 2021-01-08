@@ -22,7 +22,7 @@ export class TodoCollection {
   }
 
   getTodoById(id: number) {
-    return this.todoItems.find(item => item.id === id);
+    return this.itemMap.get(id);
   }
 
   getTodosItems(includeComplete: boolean): TodoItem[] {
@@ -39,6 +39,7 @@ export class TodoCollection {
   }
 
   removeComplete(){
+    console.log("inne i removeC()!")
     this.itemMap.forEach(item => {
       if (item.complete){
         this.itemMap.delete(item.id);

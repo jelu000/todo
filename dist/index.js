@@ -7,17 +7,17 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const todoItem_1 = require("./todoItem");
-const todoCollection_1 = require("./todoCollection");
+const jsonTodoCollection_1 = require("./jsonTodoCollection");
 const inquirer = __importStar(require("inquirer"));
-//import { JsonTodoCollection } from  "./JsonTodoCollection";
 console.clear();
 console.log("Jens ToDo List: ");
-let todos = [
-    new todoItem_1.TodoItem(1, "köpa blommor"), new todoItem_1.TodoItem(2, "köra skoter"),
-    new todoItem_1.TodoItem(3, "busa med hund"), new todoItem_1.TodoItem(4, "kasta sopor")
-];
-let colection = new todoCollection_1.TodoCollection("Jens", todos);
+/*let todos = [
+  new TodoItem(1, "köpa blommor"), new TodoItem(2, "köra skoter")
+  , new TodoItem(3, "busa med hund"), new TodoItem(4, "kasta sopor")
+];*/
+let todos = [];
+let colection = new jsonTodoCollection_1.JsonTodoCollection("Jens", todos);
+//let colection:TodoCollection = new TodoCollection("Jens", todos);
 let showCompleted = true;
 function displayTodoList() {
     console.log(`${colection.userName} todoList: `
@@ -29,7 +29,7 @@ var Commands;
     Commands["Add"] = "Add new task";
     Commands["Complete"] = "Complete task";
     Commands["Toggle"] = "Show/Hide completed";
-    Commands["Purge"] = "Remove completed task";
+    Commands["Purge"] = "Remove completed tasks";
     Commands["Quit"] = "Quit";
 })(Commands || (Commands = {}));
 function promptComplete() {
@@ -37,7 +37,7 @@ function promptComplete() {
     inquirer.prompt({
         type: "checkbox",
         name: "complete",
-        message: "Mark task complete",
+        message: "Mark tasks complete",
         choices: colection.getTodosItems(showCompleted).map(item => ({
             name: item.task, value: item.id, checked: item.complete
         }))
@@ -90,6 +90,21 @@ function promptUser() {
     });
 }
 promptUser();
+//TEST-----------------------------------------------------
+/*
+console.log(`${colection.userName} todoList`);
+colection.getTodosItems(false).forEach(element => { element.printDetails() });
+console.log(JSON.stringify(colection.getTodoById(2)));
+console.log("Testar getItems()----------------------------");
+console.log(JSON.stringify(colection.getTodosItems(false)));
+console.log("Sätter en complete till true----------------------------");
+colection.markComplete(2, true);
+console.log(JSON.stringify(colection.getTodosItems(true)));
+console.log("Tar bort completed----------------------------");
+colection.removeComplete();
+console.log(JSON.stringify(colection.getTodosItems(true)));
+*/
+//SLUT TEST------------------------------------------------
 /* First exercise
 console.log(`${colection.userName} todoList`);
 

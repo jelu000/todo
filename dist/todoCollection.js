@@ -17,7 +17,7 @@ class TodoCollection {
         return this.nextId;
     }
     getTodoById(id) {
-        return this.todoItems.find(item => item.id === id);
+        return this.itemMap.get(id);
     }
     getTodosItems(includeComplete) {
         return [...this.itemMap.values()].filter(item => includeComplete || !item.complete);
@@ -29,6 +29,7 @@ class TodoCollection {
         }
     }
     removeComplete() {
+        console.log("inne i removeC()!");
         this.itemMap.forEach(item => {
             if (item.complete) {
                 this.itemMap.delete(item.id);

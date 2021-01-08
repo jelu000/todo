@@ -21,5 +21,21 @@ class JsonTodoCollection extends todoCollection_1.TodoCollection {
             todoItems.forEach(item => this.itemMap.set(item.id, item));
         }
     }
+    addTodo(task) {
+        let result = super.addTodo(task);
+        this.storeTasks();
+        return result;
+    }
+    markComplete(id, complete) {
+        super.markComplete(id, complete);
+        this.storeTasks();
+    }
+    removeComplete() {
+        super.removeComplete();
+        this.storeTasks();
+    }
+    storeTasks() {
+        this.database.set("tasks", [...this.itemMap.values()]).write();
+    }
 }
 exports.JsonTodoCollection = JsonTodoCollection;

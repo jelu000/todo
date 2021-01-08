@@ -1,18 +1,22 @@
 import { TodoItem } from "./todoItem";
 import { TodoCollection } from "./todoCollection";
+import { JsonTodoCollection } from "./jsonTodoCollection";
 
 import * as inquirer from 'inquirer';
-//import { JsonTodoCollection } from  "./JsonTodoCollection";
+
 
 console.clear();
 console.log("Jens ToDo List: ");
 
-let todos = [
+/*let todos = [
   new TodoItem(1, "köpa blommor"), new TodoItem(2, "köra skoter")
   , new TodoItem(3, "busa med hund"), new TodoItem(4, "kasta sopor")
-];
+];*/
+let todos:TodoItem[] = [];
 
-let colection:TodoCollection = new TodoCollection("Jens", todos);
+let colection:TodoCollection = new JsonTodoCollection("Jens", todos);
+//let colection:TodoCollection = new TodoCollection("Jens", todos);
+
 let showCompleted = true;
 
 function displayTodoList():void {
@@ -27,7 +31,7 @@ enum Commands {
   Add = "Add new task",
   Complete = "Complete task",
   Toggle = "Show/Hide completed",
-  Purge = "Remove completed task",
+  Purge = "Remove completed tasks",
   Quit = "Quit"
 }
 
@@ -36,13 +40,15 @@ function promptComplete():void {
   inquirer.prompt({
     type: "checkbox",
     name: "complete",
-    message: "Mark task complete",
+    message: "Mark tasks complete",
     choices: colection.getTodosItems(showCompleted).map(item =>({
       name: item.task, value: item.id, checked: item.complete}))
     }).then(answers => {
       let completedTask = answers["complete"] as number[];
+
       colection.getTodosItems(true).forEach(item =>
         colection.markComplete(item.id, completedTask.find(id => id===item.id) != undefined));
+
       promptUser();
   })
 }
@@ -103,6 +109,21 @@ function promptUser(): void {
 
 promptUser();
 
+//TEST-----------------------------------------------------
+/*
+console.log(`${colection.userName} todoList`);
+colection.getTodosItems(false).forEach(element => { element.printDetails() });
+console.log(JSON.stringify(colection.getTodoById(2)));
+console.log("Testar getItems()----------------------------");
+console.log(JSON.stringify(colection.getTodosItems(false)));
+console.log("Sätter en complete till true----------------------------");
+colection.markComplete(2, true);
+console.log(JSON.stringify(colection.getTodosItems(true)));
+console.log("Tar bort completed----------------------------");
+colection.removeComplete();
+console.log(JSON.stringify(colection.getTodosItems(true)));
+*/
+//SLUT TEST------------------------------------------------
 
 /* First exercise
 console.log(`${colection.userName} todoList`);
