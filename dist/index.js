@@ -82,8 +82,8 @@ function promptUser() {
                     promptUser();
                 }
                 break;
-            case Commands:
-                Purge: colection.removeComplete();
+            case Commands.Purge:
+                colection.removeComplete();
                 promptUser();
                 break;
         }

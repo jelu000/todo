@@ -97,10 +97,10 @@ function promptUser(): void {
         }
         break;
 
-      case Commands:Purge:
-      colection.removeComplete();
-      promptUser();
-      break;
+      case Commands.Purge:
+        colection.removeComplete();
+        promptUser();
+        break;
 
     }
 

@@ -29,7 +29,6 @@ class TodoCollection {
         }
     }
     removeComplete() {
-        console.log("inne i removeC()!");
         this.itemMap.forEach(item => {
             if (item.complete) {
                 this.itemMap.delete(item.id);

@@ -8,7 +8,7 @@
     {
       "id": 2,
       "task": "köra skoter",
-      "complete": true
+      "complete": false
     },
     {
       "id": 3,
@@ -16,13 +16,13 @@
       "complete": false
     },
     {
-      "id": 4,
-      "task": "kasta sopor",
+      "id": 5,
+      "task": "prata med sofie",
       "complete": false
     },
     {
-      "id": 5,
-      "task": "prata med sofie",
+      "id": 6,
+      "task": "borsta tänder Albin",
       "complete": false
     }
   ]
